@@ -1,6 +1,10 @@
 # Docker container PHP for Magento 2
 
-PHP Version 7.0.9 (FPM)
+Included:
+
+- PHP Version 7.0.9 (FPM)
+- Composer
+- Node.js
 
 ## Description
 
