@@ -38,3 +38,8 @@ RUN curl -sS https://getcomposer.org/installer | \
 # Install Node.js
 RUN curl -sL  https://deb.nodesource.com/setup_7.x | bash - && \
   apt-get install -y nodejs
+
+# Install MageRun for M2
+RUN cd /usr/local/bin && \
+     wget https://files.magerun.net/n98-magerun2.phar && \
+     chmod +x ./n98-magerun2.phar
