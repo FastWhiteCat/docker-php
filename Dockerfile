@@ -14,6 +14,8 @@ RUN apt-get update \
     lynx \
     psmisc \
     bzip2 \
+    cron \
+    supervisord \
   && apt-get clean
 
 RUN docker-php-ext-configure \
