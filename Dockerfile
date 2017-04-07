@@ -46,3 +46,12 @@ RUN curl -sL  https://deb.nodesource.com/setup_7.x | bash - && \
 RUN cd /usr/local/bin && \
      wget https://files.magerun.net/n98-magerun2.phar && \
      chmod +x ./n98-magerun2.phar
+
+# Install Imagemagic
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+     libmagickwand-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN pecl install imagick-3.4.3 \
+  && docker-php-ext-enable imagick
