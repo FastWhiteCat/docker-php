@@ -15,7 +15,7 @@ RUN apt-get update \
     psmisc \
     bzip2 \
     cron \
-    supervisord \
+    supervisor \
   && apt-get clean
 
 RUN docker-php-ext-configure \
