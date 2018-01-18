@@ -29,7 +29,8 @@ RUN docker-php-ext-configure \
     xsl \
     zip \
     opcache \
-    soap
+    soap \
+    bc-math
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | \
