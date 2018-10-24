@@ -32,23 +32,36 @@ RUN docker-php-ext-configure \
     soap \
     bcmath
 
-# Install Composer
+
+###############################################################################
+#                                 Composer
+###############################################################################
+
 RUN curl -sS https://getcomposer.org/installer | \
     php -- \
       --install-dir=/usr/local/bin \
       --filename=composer \
       --version=1.1.2
 
-# Install Node.js
+
+###############################################################################
+#                                 Node.js
+###############################################################################
 RUN curl -sL  https://deb.nodesource.com/setup_7.x | bash - && \
   apt-get install -y nodejs
 
-# Install MageRun for M2
+
+###############################################################################
+#                              MageRun for M2
+###############################################################################
 RUN cd /usr/local/bin && \
      wget https://files.magerun.net/n98-magerun2.phar && \
      chmod +x ./n98-magerun2.phar
 
-# Install Imagemagic
+
+###############################################################################
+#                                Imagemagic
+###############################################################################
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
      libmagickwand-dev \
@@ -56,3 +69,19 @@ RUN apt-get update \
 
 RUN pecl install imagick-3.4.3 \
   && docker-php-ext-enable imagick
+
+
+###############################################################################
+#                               PHP-REDIS
+###############################################################################
+
+ENV PHPREDIS_VERSION 4.1.0
+
+ADD https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz /tmp/redis.tar.gz
+RUN tar xzf /tmp/redis.tar.gz -C /tmp \
+    && mkdir -p /usr/src/php/ext \
+    && mv /tmp/phpredis-$PHPREDIS_VERSION /usr/src/php/ext/redis \
+    && echo 'redis' >> /usr/src/php-available-exts \
+    && docker-php-ext-install redis \
+    && rm -rf /usr/src/php/ext/redis
+
