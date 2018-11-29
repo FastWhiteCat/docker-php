@@ -45,7 +45,7 @@ RUN pecl install mcrypt-1.0.1 && docker-php-ext-enable mcrypt
 #                                Imagemagic
 ###############################################################################
 RUN apt-get install -y --no-install-recommends \
-    libmagickwand-dev \
+    libmagickwand-dev
 
 RUN pecl install imagick-3.4.3 && \
     docker-php-ext-enable imagick
@@ -72,7 +72,7 @@ RUN curl -sL  https://deb.nodesource.com/setup_10.x | bash - && \
 #                              MageRun for M2
 ###############################################################################
 RUN cd /usr/local/bin && \
-    wget https://files.magerun.net/n98-magerun2.phar && \
+    wget https://files.magerun.net/n98-magerun2.phar --quiet && \
     chmod +x ./n98-magerun2.phar
 
 ###############################################################################
