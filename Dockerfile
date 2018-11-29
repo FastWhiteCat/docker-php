@@ -1,37 +1,54 @@
-FROM php:7.1.13-fpm
+FROM php:7.2.12-fpm
 
-RUN apt-get update \
-  && apt-get install -y \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libpng12-dev \
-    libxslt1-dev \
-    git \
-    vim \
-    wget \
-    lynx \
-    psmisc \
-    bzip2 \
-    cron \
-    supervisor \
-  && apt-get clean
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      bzip2 \
+      cron \
+      git \
+      gnupg \
+      libfreetype6-dev \
+      libicu-dev \
+      libjpeg62-turbo-dev \
+      libmcrypt-dev \
+      libpng-dev \
+      libxslt1-dev \
+      lynx \
+      psmisc \
+      vim \
+      wget \
+      supervisor
 
 RUN docker-php-ext-configure \
     gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/; \
-  docker-php-ext-install \
-    gd \
-    intl \
-    mbstring \
-    mcrypt \
-    pdo_mysql \
-    xsl \
-    zip \
-    opcache \
-    soap \
-    bcmath
+    docker-php-ext-install \
+      bcmath \
+      gd \
+      intl \
+      mbstring \
+      opcache \
+      pdo_mysql \
+      soap \
+      xsl \
+      zip
 
+###############################################################################
+#                               PHP-REDIS
+###############################################################################
+RUN pecl install redis && docker-php-ext-enable redis
+
+###############################################################################
+#                               PHP-mcrypt
+###############################################################################
+RUN pecl install mcrypt-1.0.1 && docker-php-ext-enable mcrypt
+
+###############################################################################
+#                                Imagemagic
+###############################################################################
+RUN apt-get install -y --no-install-recommends \
+    libmagickwand-dev \
+
+RUN pecl install imagick-3.4.3 && \
+    docker-php-ext-enable imagick
 
 ###############################################################################
 #                                 Composer
@@ -41,47 +58,24 @@ RUN curl -sS https://getcomposer.org/installer | \
     php -- \
       --install-dir=/usr/local/bin \
       --filename=composer \
-      --version=1.6.5
+      --version=1.7.3
 
 
 ###############################################################################
 #                                 Node.js
 ###############################################################################
-RUN curl -sL  https://deb.nodesource.com/setup_7.x | bash - && \
-  apt-get install -y nodejs
+RUN curl -sL  https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y nodejs
 
 
 ###############################################################################
 #                              MageRun for M2
 ###############################################################################
 RUN cd /usr/local/bin && \
-     wget https://files.magerun.net/n98-magerun2.phar && \
-     chmod +x ./n98-magerun2.phar
-
-
-###############################################################################
-#                                Imagemagic
-###############################################################################
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-     libmagickwand-dev \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN pecl install imagick-3.4.3 \
-  && docker-php-ext-enable imagick
-
+    wget https://files.magerun.net/n98-magerun2.phar && \
+    chmod +x ./n98-magerun2.phar
 
 ###############################################################################
-#                               PHP-REDIS
+#                              Clean Up
 ###############################################################################
-
-ENV PHPREDIS_VERSION 4.1.0
-
-ADD https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz /tmp/redis.tar.gz
-RUN tar xzf /tmp/redis.tar.gz -C /tmp \
-    && mkdir -p /usr/src/php/ext \
-    && mv /tmp/phpredis-$PHPREDIS_VERSION /usr/src/php/ext/redis \
-    && echo 'redis' >> /usr/src/php-available-exts \
-    && docker-php-ext-install redis \
-    && rm -rf /usr/src/php/ext/redis
-
+RUN  apt-get clean && rm -rf /var/lib/apt/lists/*
