@@ -41,13 +41,13 @@ RUN curl -sS https://getcomposer.org/installer | \
     php -- \
       --install-dir=/usr/local/bin \
       --filename=composer \
-      --version=1.6.5
+      --version=1.7.3
 
 
 ###############################################################################
 #                                 Node.js
 ###############################################################################
-RUN curl -sL  https://deb.nodesource.com/setup_7.x | bash - && \
+RUN curl -sL  https://deb.nodesource.com/setup_10.x | bash - && \
   apt-get install -y nodejs
 
 
@@ -55,7 +55,7 @@ RUN curl -sL  https://deb.nodesource.com/setup_7.x | bash - && \
 #                              MageRun for M2
 ###############################################################################
 RUN cd /usr/local/bin && \
-     wget https://files.magerun.net/n98-magerun2.phar && \
+     wget https://files.magerun.net/n98-magerun2.phar --quiet && \
      chmod +x ./n98-magerun2.phar
 
 
@@ -75,7 +75,7 @@ RUN pecl install imagick-3.4.3 \
 #                               PHP-REDIS
 ###############################################################################
 
-ENV PHPREDIS_VERSION 4.1.0
+ENV PHPREDIS_VERSION 4.2.0
 
 ADD https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz /tmp/redis.tar.gz
 RUN tar xzf /tmp/redis.tar.gz -C /tmp \
@@ -85,3 +85,8 @@ RUN tar xzf /tmp/redis.tar.gz -C /tmp \
     && docker-php-ext-install redis \
     && rm -rf /usr/src/php/ext/redis
 
+###############################################################################
+#                               PHP-REDIS
+###############################################################################
+
+RUN  apt-get clean && rm -rf /var/lib/apt/lists/*

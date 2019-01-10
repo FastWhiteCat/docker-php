@@ -3,11 +3,11 @@
 Included:
 
 - PHP Version 7.1.13 (FPM)
-- Composer 1.6.5
-- Node.js
+- Composer 1.7.3
+- Node.js 10.x
 - MageRun for M2
 - ImageMagic 3.4.3
-- PhpRedis 4.1.0 https://github.com/phpredis/phpredis
+- PhpRedis 4.2.0 https://github.com/phpredis/phpredis
 
 Libraries
 - git
