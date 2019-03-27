@@ -2,7 +2,7 @@
 
 Included:
 
-- PHP Version 7.1.13 (FPM)
+- PHP Version 7.1.16 (FPM)
 - Composer 1.7.3
 - Node.js 10.x
 - MageRun for M2
