@@ -29,7 +29,8 @@ RUN docker-php-ext-configure \
       pdo_mysql \
       soap \
       xsl \
-      zip
+      zip \
+      pcntl
 
 ###############################################################################
 #                               PHP-REDIS
