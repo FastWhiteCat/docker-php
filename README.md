@@ -18,6 +18,7 @@ Libraries
 - bzip2
 - cron
 - supervisor
+- pcntl
 
 ## Description
 
